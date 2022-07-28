@@ -1,0 +1,1006 @@
+/*
+QUESTION:
+Have the function QuestionsMarks(str) take the str string parameter, which will contain single digit numbers, letters, and question marks, and check if there are exactly 3 question marks between every pair of two numbers that add up to 10. If so, then your program should return the string true, otherwise it should return the string false. If there aren't any two numbers that add up to 10 in the string, then your program should return false as well.
+For example: if str is "arrb6???4xxbl5???eee5" then your program should return true because there are exactly 3 question marks between 6 and 4, and 3 question marks between 5 and 5 at the end of the string.
+*/
+
+function QuestionsMarks(_str) {
+    //Replace all groups of non-numberic and non-question marks characters with "|".
+    //This is to separate out numbers which were previously separated by other characters
+    var str = _str.replace(new RegExp("([^0-9\\?]+)","gi"),"|");
+
+    //Remove "|" characters which are next to question marks
+    //This is so that later when we are finding for "???" we won't have problems
+    str = str.replace(new RegExp("(\\?\\|)|(\\|\\?)","gi"),"?");
+
+    //At this point, we have the numbers separated purely by '?'s and '|'s
+    var regNumbers = new RegExp("([0-9]+)","gi");
+    var i, result, results = [];
+
+    //Get all the indexes of the numbers in this string
+    while(result = regNumbers.exec(str)){
+        results.push({
+            "number": parseInt(result),
+            "index": result.index
+        });
+    }
+
+    var no10 = true;
+    var r1,r2;
+    for(i=0;i<results.length-1;i++){
+        r1 = results[i];
+        r2 = results[i+1];
+
+        if(r1.number+r2.number != 10) continue;
+        no10 = false;
+        if(str.substring(r1.index+1,r2.index) != "???" ) return false;
+    }
+
+    if(no10) return false;
+    
+    return true;
+}
+
+//For testing purposes
+/*
+//n=-1;
+testcases = ["arrb6???4xxbl5???eee5","9???1???9??1???9","5??aaaaaaaaaaaaaaaaaaa?5?5"];
+readline = ()=>{
+    return testcases[i];
+}
+for(i=0;i<testcases.length;i++)
+//*/
+QuestionsMarks(readline())
+
+
+
+--------------------------------
+/*
+QUESTION:
+Have the function FirstReverse(str) take the str parameter being passed and return the string in reversed order. For example: if the input string is "Hello World and Coders" then your program should return the string "sredoC dna dlroW olleH". 
+*/
+
+function FirstReverse(str) {
+	return str.split("").reverse().join("");
+}
+
+// keep this function call here
+FirstReverse(readline());
+
+
+----------------------------------------------------
+/*
+QUESTION:
+Have the function FirstFactorial(num) take the num parameter being passed and return the factorial of it. For example: if num = 4, then your program should return (4 * 3 * 2 * 1) = 24. For the test cases, the range will be between 1 and 18 and the input will always be an integer. 
+*/
+
+var fact = {}
+
+function FirstFactorial(n) {
+    if(n<=2) return n;
+    if(fact.hasOwnProperty(n)) return fact[n]
+
+    return fact[n] = n*FirstFactorial(n-1);
+}
+
+// keep this function call here
+FirstFactorial(readline());
+
+----------------------------------------------
+
+/*
+QUESTION:
+Have the function CheckNums(num1,num2) take both parameters being passed and return the string true if num2 is greater than num1, otherwise return the string false. If the parameter values are equal to each other then return the string -1.
+*/
+function CheckNums(num1,num2) {
+  return (num1 == num2)?-1:(num2>num1)
+}
+
+// keep this function call here
+CheckNums(readline());
+
+
+-----------------------------------------------------------------
+/**
+ * Using the JavaScript language, have the function arrayRotation(arr) take the
+ * arr parameter being passed which will be an array of non-negative integers
+ * and circularly rotate the array starting from the Nth element where N is
+ * equal to the first integer in the array. For example: if arr is [2, 3, 4, 1,
+ * 6, 10] then your program should rotate the array starting from the 2nd
+ * position because the first element in the array is 2. The final array will
+ * therefore be [4, 1, 6, 10, 2, 3], and your program should return the new
+ * array as a string, so for this example your program would return 4161023. The
+ * first element in the array will always be an integer greater than or equal to
+ * 0 and less than the size of the array.
+ *
+ * https://coderbyte.com/results/bhanson:Array%20Rotation:JavaScript
+ *
+ * @param  {array} arr
+ * @return {string}
+ */
+function arrayRotation(arr) {
+    const rotateDelta = arr[0];
+
+    const newArray = arr
+        .slice(rotateDelta, arr.length)
+        .concat(arr.slice(0, rotateDelta));
+
+    return newArray.join('');
+}
+
+module.exports = arrayRotation;
+
+--------------------------------------------------------------------------
+
+/**
+ * Have the function countingAnagrams(str) take the str parameter and determine
+ * how many anagrams exist in the string. An anagram is a new word that is
+ * produced from rearranging the characters in a different word, for example:
+ * cars and arcs are anagrams. Your program should determine how many anagrams
+ * exist in a given string and return the total number. For example: if str is
+ * "cars are very cool so are arcs and my os" then your program should return 2
+ * because "cars" and "arcs" form 1 anagram and "so" and "os" form a 2nd
+ * anagram. The word "are" occurs twice in the string but it isn't an anagram
+ * because it is the same word just repeated. The string will contain only
+ * spaces and lowercase letters, no punctuation, numbers, or uppercase letters.
+ *
+ * https://www.coderbyte.com/results/bhanson:Counting%20Anagrams:JavaScript
+ *
+ * @param  {string} str
+ * @return {number}
+ */
+function countingAnagrams(str) {
+    let words = str.split(' ');
+
+    let uniqueWords = new Set(words);
+
+    let signatures = {};
+
+    uniqueWords.forEach(word => {
+        let key = word
+            .split('')
+            .sort()
+            .join('');
+        if (signatures[key] === undefined) {
+            signatures[key] = 1;
+        } else {
+            signatures[key]++;
+        }
+    });
+
+    let anagrams = Object.values(signatures).reduce(
+        (sum, val) => sum + (val - 1),
+        0
+    );
+
+    return anagrams;
+}
+
+module.exports = countingAnagrams;
+
+
+----------------------------------------------------------------------------
+/**
+ * Have the function abCheck(str) take the str parameter being passed and return
+ * the string true if the characters a and b are separated by exactly 3 places
+ * anywhere in the string at least once (ie. "lane borrowed" would result in
+ * true because there is exactly three characters between a and b). Otherwise
+ * return the string false.
+ *
+ * https://www.coderbyte.com/results/bhanson:AB%20Check:JavaScript
+ *
+ * @param  {string} str
+ * @return {string} 'true' or 'false'
+ */
+function abCheck(str) {
+    let searchLetters = ['a', 'b'];
+    let letterSpace = 3;
+
+    if (str.length < letterSpace + 2) {
+        return 'false';
+    }
+
+    for (let i = 0; i < str.length - letterSpace - 1; i++) {
+        if (str[i] === searchLetters[0]) {
+            if (str[i + letterSpace + 1] === searchLetters[1]) {
+                return 'true';
+            }
+        }
+
+        if (str[i] === searchLetters[1]) {
+            if (str[i + letterSpace + 1] === searchLetters[0]) {
+                return 'true';
+            }
+        }
+    }
+
+    return 'false';
+}
+
+module.exports = abCheck;
+
+
+------------------------------------------------------------------------
+
+const matrixCheck = (matrix) => {
+  let columnNumb
+  for (let index = 0; index < matrix.length; index++) {
+    if (index === 0) {
+      columnNumb = matrix[index].length
+    } else if (matrix[index].length !== columnNumb) {
+      // The columns in this array are not equal
+    } else {
+      return columnNumb
+    }
+  }
+}
+
+// tests to see if the matrices have a like side, i.e. the row length on the first matrix matches the column length on the second matrix, or vice versa.
+const twoMatricesCheck = (first, second) => {
+  const [firstRowLength, secondRowLength, firstColLength, secondColLength] = [first.length, second.length, matrixCheck(first), matrixCheck(second)]
+  if (firstRowLength !== secondColLength || secondRowLength !== firstColLength) {
+    // These matrices do not have a common side
+    return false
+  } else {
+    return true
+  }
+}
+
+// returns an empty array that has the same number of rows as the left matrix being multiplied.
+// Uses Array.prototype.map() to loop over the first (or left) matrix and returns an empty array on each iteration.
+const initiateEmptyArray = (first, second) => {
+  if (twoMatricesCheck(first, second)) {
+    const emptyArray = first.map(() => {
+      return ['']
+    })
+    return emptyArray
+  } else {
+    return false
+  }
+}
+
+// Finally, `matrixMult` uses `Array.prototype.push()`, multiple layers of nested `for` loops, the addition assignment `+=` operator and multiplication operator `*` to perform the dot product between two matrices of differing sizes.
+// Dot product, takes the row of the first matrix and multiplies it by the column of the second matrix, the `twoMatricesCheck` tested to see if they were the same size already.
+// The dot product for each iteration is then saved to its respective index into `multMatrix`.
+export const matrixMult = (firstArray, secondArray) => {
+  const multMatrix = initiateEmptyArray(firstArray, secondArray)
+  for (let rm = 0; rm < firstArray.length; rm++) {
+    const rowMult = []
+    for (let col = 0; col < firstArray[0].length; col++) {
+      rowMult.push(firstArray[rm][col])
+    }
+    for (let cm = 0; cm < firstArray.length; cm++) {
+      const colMult = []
+      for (let row = 0; row < secondArray.length; row++) {
+        colMult.push(secondArray[row][cm])
+      }
+      let newNumb = 0
+      for (let index = 0; index < rowMult.length; index++) {
+        newNumb += rowMult[index] * colMult[index]
+      }
+      multMatrix[rm][cm] = newNumb
+    }
+  }
+  return multMatrix
+}
+
+// const firstMatrix = [
+//   [1, 2],
+//   [3, 4]
+// ]
+
+// const secondMatrix = [
+//   [5, 6],
+//   [7, 8]
+// ]
+
+// matrixMult(firstMatrix, secondMatrix) // [ [ 19, 22 ], [ 43, 50 ] ]
+
+// const thirdMatrix = [
+//   [-1, 4, 1],
+//   [7, -6, 2]
+// ]
+// const fourthMatrix = [
+//   [2, -2],
+//   [5, 3],
+//   [3, 2]
+// ]
+
+// matrixMult(thirdMatrix, fourthMatrix) // [ [ 21, 16 ], [ -10, -28 ] ]
+
+
+--------------------------------------------------
+
+perfect number-----
+
+const factorsExcludingNumber = (n) => {
+  return [...Array(n).keys()].filter((num) => n % num === 0)
+}
+
+const perfectNumber = (n) => {
+  const factorSum = factorsExcludingNumber(n).reduce((num, initialValue) => {
+    return num + initialValue
+  }, 0)
+
+  return factorSum === n
+}
+
+export { perfectNumber }
+
+-------------------------------------------------------
+sum of digits--
+
+function sumOfDigitsUsingString (number) {
+  if (number < 0) number = -number
+
+  return Number.parseInt(number.toString().split('').reduce((a, b) => Number(a) + Number(b)))
+}
+
+/*
+  The input is divided by 10 in each iteration, till the input is equal to 0
+  The sum of all the digits is returned (The res variable acts as a collector, taking the remainders on each iteration)
+*/
+function sumOfDigitsUsingLoop (number) {
+  if (number < 0) number = -number
+  let res = 0
+
+  while (number > 0) {
+    res += number % 10
+    number = Math.floor(number / 10)
+  }
+
+  return res
+}
+
+/*
+  We use the fact that the sum of the digits of a one digit number is itself, and check whether the number is less than 10. If so, then we return the number. Else, we take the number divided by 10 and floored, and recursively call the function, while adding it with the number mod 10
+*/
+function sumOfDigitsUsingRecursion (number) {
+  if (number < 0) number = -number
+
+  if (number < 10) return number
+
+  return (number % 10) + sumOfDigitsUsingRecursion(Math.floor(number / 10))
+}
+
+export { sumOfDigitsUsingRecursion, sumOfDigitsUsingLoop, sumOfDigitsUsingString }
+
+
+-----------------------------------------------------------------
+-armstrong
+/**
+ * Author: dephraiim
+ * License: GPL-3.0 or later
+ *
+ * An Armstrong number is equal to the sum of its own digits each raised to the power of the number of digits.
+ * For example, 370 is an Armstrong number because 3*3*3 + 7*7*7 + 0*0*0 = 370.
+ * An Armstrong number is often called Narcissistic number.
+ *
+ */
+
+const armstrongNumber = (num) => {
+  if (num < 0 || typeof num !== 'number') return false
+
+  let newSum = 0
+
+  const numArr = num.toString().split('')
+  numArr.forEach((num) => {
+    newSum += parseInt(num) ** numArr.length
+  })
+
+  return newSum === num
+}
+
+export { armstrongNumber }
+
+--------------------------------------------------------------
+
+HCF----
+
+/*
+    author: redfly1
+    More about HCF:
+        https://en.wikipedia.org/wiki/Greatest_common_divisor
+ */
+
+const findHCF = (x, y) => {
+  // If the input numbers are less than 1 return an error message.
+  if (x < 1 || y < 1) {
+    return 'Please enter values greater than zero.'
+  }
+
+  // If the input numbers are not integers return an error message.
+  if (x !== Math.round(x) || y !== Math.round(y)) {
+    return 'Please enter whole numbers.'
+  }
+
+  // Now apply Euclid's algorithm to the two numbers.
+  while (Math.max(x, y) % Math.min(x, y) !== 0) {
+    if (x > y) {
+      x %= y
+    } else {
+      y %= x
+    }
+  }
+
+  // When the while loop finishes the minimum of x and y is the HCF.
+  return Math.min(x, y)
+}
+
+export { findHCF }
+
+
+=====================================================
+
+LCM----
+
+/ Find the LCM of two numbers.
+const findLcm = (num1, num2) => {
+  // If the input numbers are less than 1 return an error message.
+  if (num1 < 1 || num2 < 1) {
+    return 'Please enter values greater than zero.'
+  }
+
+  // If the input numbers are not integers return an error message.
+  if (num1 !== Math.round(num1) || num2 !== Math.round(num2)) {
+    return 'Please enter whole numbers.'
+  }
+
+  // Get the larger number between the two
+  const maxNum = Math.max(num1, num2)
+  let lcm = maxNum
+
+  while (true) {
+    if (lcm % num1 === 0 && lcm % num2 === 0) return lcm
+    lcm += maxNum
+  }
+}
+
+export { findLcm }
+
+
+==========================================
+factors---
+
+const factorsOfANumber = (number = 0) => {
+  return Array.from(Array(number + 1).keys()).filter(
+    (num) => number % num === 0
+  )
+}
+
+export { factorsOfANumber }
+
+---------------------------------------------------------
+
+reverse number---
+
+const ReverseNumber = (number) => {
+  // firstly, check that input is a number or not.
+  if (typeof number !== 'number') {
+    return new TypeError('Argument is not a number.')
+  }
+  // A variable for storing the reversed number.
+  let reverseNumber = 0
+  // Iterate the process until getting the number is 0.
+  while (number > 0) {
+    // get the last digit of the number
+    const lastDigit = number % 10
+    // add to the last digit to in reverseNumber
+    reverseNumber = reverseNumber * 10 + lastDigit
+    // reduce the actual number.
+    number = Math.floor(number / 10)
+  }
+  return reverseNumber
+}
+
+export { ReverseNumber }
+
+
+---------------------------------------------------------------------------
+/*
+Calculate the volume of the shapes
+Volume for Cuboid
+Volume for Cube
+Volume for Cone
+Volume for Pyramid
+Volume for Cylinder
+Volume for Triangular Prism
+Volume for Pentagonal Prism
+Volume for Sphere
+Volume for Hemisphere
+*/
+
+/*
+  Calculate the volume for a Cuboid
+  Reference: https://www.cuemath.com/measurement/volume-of-cuboid/
+  return width * length * height
+*/
+const volCuboid = (width, length, height) => {
+  isNumber(width, 'Width')
+  isNumber(length, 'Length')
+  isNumber(height, 'Height')
+  return (width * length * height)
+}
+
+/*
+  Calculate the volume for a Cube
+  Reference: https://www.cuemath.com/measurement/volume-of-cube/
+  return length * length * length
+*/
+const volCube = (length) => {
+  isNumber(length, 'Length')
+  return (length ** 3)
+}
+
+/*
+  Calculate the volume for a Cone
+  Reference: https://www.cuemath.com/measurement/volume-of-cone/
+  return PI * radius^2 * height/3
+*/
+const volCone = (radius, height) => {
+  isNumber(radius, 'Radius')
+  isNumber(height, 'Height')
+  return (Math.PI * radius ** 2 * height / 3.0)
+}
+
+/*
+  Calculate the volume for a Pyramid
+  Reference: https://www.cuemath.com/measurement/volume-of-pyramid/
+  return (baseLength * baseWidth * height) / 3
+*/
+const volPyramid = (baseLength, baseWidth, height) => {
+  isNumber(baseLength, 'BaseLength')
+  isNumber(baseWidth, 'BaseWidth')
+  isNumber(height, 'Height')
+  return (baseLength * baseWidth * height) / 3.0
+}
+
+/*
+  Calculate the volume for a Cylinder
+  Reference: https://www.cuemath.com/measurement/volume-of-cylinder/
+  return PI * radius^2 * height
+*/
+const volCylinder = (radius, height) => {
+  isNumber(radius, 'Radius')
+  isNumber(height, 'Height')
+  return (Math.PI * radius ** 2 * height)
+}
+
+/*
+  Calculate the volume for a Triangular Prism
+  Reference: http://lrd.kangan.edu.au/numbers/content/03_volume/04_page.htm
+  return 1 / 2 * baseLengthTriangle * heightTriangle * height
+*/
+const volTriangularPrism = (baseLengthTriangle, heightTriangle, height) => {
+  isNumber(baseLengthTriangle, 'BaseLengthTriangle')
+  isNumber(heightTriangle, 'HeightTriangle')
+  isNumber(height, 'Height')
+  return (1 / 2 * baseLengthTriangle * heightTriangle * height)
+}
+
+/*
+  Calculate the volume for a Pentagonal Prism
+  Reference: https://www.cuemath.com/measurement/volume-of-pentagonal-prism/
+  return 5/2 * pentagonalLength * pentagonalBaseLength * height
+*/
+const volPentagonalPrism = (pentagonalLength, pentagonalBaseLength, height) => {
+  isNumber(pentagonalLength, 'PentagonalLength')
+  isNumber(pentagonalBaseLength, 'PentagonalBaseLength')
+  isNumber(height, 'Height')
+  return (5 / 2 * pentagonalLength * pentagonalBaseLength * height)
+}
+
+/*
+  Calculate the volume for a Sphere
+  Reference: https://www.cuemath.com/measurement/volume-of-sphere/
+  return 4/3 * PI * radius^3
+*/
+const volSphere = (radius) => {
+  isNumber(radius, 'Radius')
+  return (4 / 3 * Math.PI * radius ** 3)
+}
+
+/*
+  Calculate the volume for a Hemisphere
+  Reference: https://www.cuemath.com/measurement/volume-of-hemisphere/
+  return (2 * PI * radius^3)/3
+*/
+const volHemisphere = (radius) => {
+  isNumber(radius, 'Radius')
+  return (2.0 * Math.PI * radius ** 3) / 3.0
+}
+
+const isNumber = (number, noName = 'number') => {
+  if (typeof number !== 'number') {
+    throw new TypeError('The ' + noName + ' should be Number type')
+  } else if (number < 0 || (!Number.isFinite(number))) {
+    throw new Error('The ' + noName + ' only accepts positive values')
+  }
+}
+
+export { volCuboid, volCube, volCone, volPyramid, volCylinder, volTriangularPrism, volPentagonalPrism, volSphere, volHemisphere }
+
+
+
+------------------------------------------------
+/**
+ * Polynomials are algebraic expressions consisting of two or more algebraic terms.
+ * Terms of a polynomial are:
+ * 1. Coefficients e.g. 5, 4 in 5x^0, 4x^3 respectively
+ * 2. Variables e.g. y in 3y^2
+ * 3. Exponents e.g. 5 in y^5
+ *
+ * Class Polynomial constructs the polynomial using Array as an argument.
+ * The members of array are coefficients and their indexes as exponents.
+ */
+class Polynomial {
+  constructor (array) {
+    this.coefficientArray = array // array of coefficients
+    this.polynomial = '' // in terms of x e.g. (2x) + (1)
+    this.construct()
+  }
+
+  /**
+   * Function to construct the polynomial in terms of x using the coefficientArray
+   */
+  construct () {
+    this.polynomial = this.coefficientArray
+      .map((coefficient, exponent) => {
+        if (coefficient === 0) {
+          return '0'
+        }
+        if (exponent === 0) {
+          return `(${coefficient})`
+        } else if (exponent === 1) {
+          return `(${coefficient}x)`
+        } else {
+          return `(${coefficient}x^${exponent})`
+        }
+      })
+      .filter((x) =>
+        x !== '0'
+      )
+      .reverse()
+      .join(' + ')
+  }
+
+  /**
+   * Function to display polynomial in terms of x
+   * @returns {String} of polynomial representation in terms of x
+   */
+  display () {
+    return this.polynomial
+  }
+
+  /**
+   * Function to calculate the value of the polynomial by substituting variable x
+   * @param {Number} value
+   */
+  evaluate (value) {
+    return this.coefficientArray.reduce((result, coefficient, exponent) => {
+      return result + coefficient * Math.pow(value, exponent)
+    }, 0)
+  }
+}
+
+export { Polynomial }
+
+-------------------------------------------------------
+
+prime factors....
+
+export const PrimeFactors = (n) => {
+  // input: n: int
+  // output: primeFactors: Array of all prime factors of n
+  const primeFactors = []
+  for (let i = 2; i * i <= n; i++) {
+    while (n % i === 0) {
+      primeFactors.push(i)
+      n = Math.floor(n / i)
+    }
+  }
+  if (n > 1) {
+    primeFactors.push(n)
+  }
+  return primeFactors
+}
+
+
+-----------------------------------------------------------
+
+SQRT--
+
+function sqrt (num, precision = 4) {
+  if (!Number.isFinite(num)) { throw new TypeError(`Expected a number, received ${typeof num}`) }
+  if (!Number.isFinite(precision)) { throw new TypeError(`Expected a number, received ${typeof precision}`) }
+  let sqrt = 1
+  for (let i = 0; i < precision; i++) {
+    sqrt -= (sqrt * sqrt - num) / (2 * sqrt)
+  }
+  return sqrt
+}
+
+export { sqrt }
+
+-----------------------------------------------------------------
+
+pascal Triangle---
+const addRow = (triangle) => {
+  const previous = triangle[triangle.length - 1]
+  const newRow = [1]
+  for (let i = 0; i < previous.length - 1; i++) {
+    const current = previous[i]
+    const next = previous[i + 1]
+    newRow.push(current + next)
+  }
+  newRow.push(1)
+  return triangle.push(newRow)
+}
+
+const generate = (numRows) => {
+  const triangle = [[1], [1, 1]]
+
+  if (numRows === 0) {
+    return []
+  } else if (numRows === 1) {
+    return [[1]]
+  } else if (numRows === 2) {
+    return [[1], [1, 1]]
+  } else {
+    for (let i = 2; i < numRows; i++) {
+      addRow(triangle)
+    }
+  }
+  return triangle
+}
+
+export { generate }
+
+--------------------------------------------------------------------
+
+permutation-combination---------
+
+const factorial = (n) => {
+  if (n >= 0) {
+    if (n === 0) {
+      return 1
+    } else {
+      return n * factorial(n - 1)
+    }
+  } else {
+    return NaN
+  }
+}
+const permutation = (n, r) => {
+  return factorial(n) / factorial(n - r)
+}
+const combination = (n, r) => {
+  return factorial(n) / (factorial(r) * factorial(n - r))
+}
+
+// Exports the functions to be used in other files.
+export { factorial, permutation, combination }
+
+
+---------------------------------------------------
+binary search---------
+
+function binarySearchRecursive (arr, x, low = 0, high = arr.length - 1) {
+  const mid = Math.floor(low + (high - low) / 2)
+
+  if (high >= low) {
+    if (arr[mid] === x) {
+      // item found => return its index
+      return mid
+    }
+
+    if (x < arr[mid]) {
+      // arr[mid] is an upper bound for x, so if x is in arr => low <= x < mid
+      return binarySearchRecursive(arr, x, low, mid - 1)
+    } else {
+      // arr[mid] is a lower bound for x, so if x is in arr => mid < x <= high
+      return binarySearchRecursive(arr, x, mid + 1, high)
+    }
+  } else {
+    // if low > high => we have searched the whole array without finding the item
+    return -1
+  }
+}
+function binarySearchIterative (arr, x, low = 0, high = arr.length - 1) {
+  while (high >= low) {
+    const mid = Math.floor(low + (high - low) / 2)
+
+    if (arr[mid] === x) {
+      // item found => return its index
+      return mid
+    }
+
+    if (x < arr[mid]) {
+      // arr[mid] is an upper bound for x, so if x is in arr => low <= x < mid
+      high = mid - 1
+    } else {
+      // arr[mid] is a lower bound for x, so if x is in arr => mid < x <= high
+      low = mid + 1
+    }
+  }
+  // if low > high => we have searched the whole array without finding the item
+  return -1
+}
+
+export { binarySearchIterative, binarySearchRecursive }
+
+--------------------------------
+string search---------
+
+function makeTable (str) {
+  // create a table of size equal to the length of `str`
+  // table[i] will store the prefix of the longest prefix of the substring str[0..i]
+  const table = new Array(str.length)
+  let maxPrefix = 0
+  // the longest prefix of the substring str[0] has length
+  table[0] = 0
+
+  // for the substrings the following substrings, we have two cases
+  for (let i = 1; i < str.length; i++) {
+    // case 1. the current character doesn't match the last character of the longest prefix
+    while (maxPrefix > 0 && str.charAt(i) !== str.charAt(maxPrefix)) {
+      // if that is the case, we have to backtrack, and try find a character  that will be equal to the current character
+      // if we reach 0, then we couldn't find a character
+      maxPrefix = table[maxPrefix - 1]
+    }
+    // case 2. The last character of the longest prefix matches the current character in `str`
+    if (str.charAt(maxPrefix) === str.charAt(i)) {
+      // if that is the case, we know that the longest prefix at position i has one more character.
+      // for example consider `.` be any character not contained in the set [a.c]
+      // str = abc....abc
+      // consider `i` to be the last character `c` in `str`
+      // maxPrefix = will be 2 (the first `c` in `str`)
+      // maxPrefix now will be 3
+      maxPrefix++
+      // so the max prefix for table[9] is 3
+    }
+    table[i] = maxPrefix
+  }
+  return table
+}
+
+// Find all the words that matches in a given string `str`
+export function stringSearch (str, word) {
+  // find the prefix table in O(n)
+  const prefixes = makeTable(word)
+  const matches = []
+
+  // `j` is the index in `P`
+  let j = 0
+  // `i` is the index in `S`
+  let i = 0
+  while (i < str.length) {
+    // Case 1.  S[i] == P[j] so we move to the next index in `S` and `P`
+    if (str.charAt(i) === word.charAt(j)) {
+      i++
+      j++
+    }
+    // Case 2.  `j` is equal to the length of `P`
+    // that means that we reached the end of `P` and thus we found a match
+    // Next we have to update `j` because we want to save some time
+    // instead of updating to j = 0 , we can jump to the last character of the longest prefix well known so far.
+    // j-1 means the last character of `P` because j is actually `P.length`
+    // e.g.
+    // S =  a b a b d e
+    // P = `a b`a b
+    // we will jump to `a b` and we will compare d and a in the next iteration
+    // a b a b `d` e
+    //     a b `a` b
+    if (j === word.length) {
+      matches.push(i - j)
+      j = prefixes[j - 1]
+      // Case 3.
+      // S[i] != P[j] There's a mismatch!
+    } else if (str.charAt(i) !== word.charAt(j)) {
+      // if we  found at least a character in common, do the same thing as in case 2
+      if (j !== 0) {
+        j = prefixes[j - 1]
+      } else {
+        // else j = 0, and we can move to the next character S[i+1]
+        i++
+      }
+    }
+  }
+
+  return matches
+}
+
+// stringSearch('Hello search the position of me', 'pos')
+
+
+----------------------------------------------------------------------
+
+/**
+ * Interpolation Search
+ *
+ * Time Complexity:
+ * -Best case: O(1)
+ * -Worst case: O(n)
+ * -O((log(log(n))) If the data are uniformly distributed
+ *
+ *
+ */
+
+export function interpolationSearch (arr, key) {
+  const length = arr.length - 1
+  let low = 0
+  let high = length
+  let position = -1
+  let delta = -1
+
+  // Because the array is sorted the key must be between low and high
+  while (low <= high && key >= arr[low] && key <= arr[high]) {
+    delta = (key - arr[low]) / (arr[high] - arr[low])
+    position = low + Math.floor((high - low) * delta)
+
+    // Target found return its position
+    if (arr[position] === key) {
+      return position
+    }
+
+    // If the key is larger then it is in the upper part of the array
+    if (arr[position] < key) {
+      low = position + 1
+      // If the key is smaller then it is in the lower part of the array
+    } else {
+      high = position - 1
+    }
+  }
+
+  return -1
+}
+
+// const arr = [2, 6, 8, 10, 12, 14, 16, 18, 20, 22, 26, 34, 39]
+
+// interpolationSearch(arr, 2)
+// interpolationSearch(arr, 12)
+// interpolationSearch(arr, 1000)
+// interpolationSearch(arr, 39)
+
+
+---------------------------------------------------------------------
+
+swap case---
+
+function swapCase(str) {
+    const LOWER = 'abcdefghijklmnopqrstuvwxyz';
+    const UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    const newString = str
+        .split('')
+        .map(char => {
+            if (LOWER.includes(char)) {
+                return char.toUpperCase();
+            }
+
+            if (UPPER.includes(char)) {
+                return char.toLowerCase();
+            }
+
+            return char;
+        })
+        .join('');
+
+    return newString;
+}
+
+module.exports = swapCase;
+
+-----------------------------------------------
+check num
+
+function checkNums(num1, num2) {
+    if (num2 > num1) {
+        return 'true';
+    } else if (num1 === num2) {
+        return '-1';
+    } else {
+        return 'false';
+    }
+}
+

@@ -1,0 +1,768 @@
+1-->>FirstFactorial(num) take the num parameter being passed and return the factorial of it.
+For example: if num = 4, then your program should return (4 * 3 * 2 * 1) = 24. For the test cases,
+the range will be between 1 and 18 and the input will always be an integer.
+Examples
+Input: 4
+Output: 24
+Input: 8
+Output: 40320
+
+sol_
+
+function FirstFactorial(number) {
+  var factorial = 1;
+  for (var i = 1; i <= number; i++) {
+    factorial *= i;
+  }
+  return factorial;
+}
+    
+// keep this function call here 
+console.log(FirstFactorial(4));
+
+
+
+2-->In this MySQL challenge, your query should return the names of the people who are reported
+ to (excluding null values), the number of members that report to them, and the average age of those members as an integer.
+The rows should be ordered by the names in alphabetical order. Your output should look like the following table.
+
+query-->SELECT
+  reportsTo as ReportsTo,
+  COUNT(ID) as Members,
+  CEIL(AVG(Age)) as 'Average Age'
+FROM maintable_H44KJ
+WHERE reportsTo IS NOT NULL
+GROUP BY reportsTo;
+
+
+3===>>>In this MySQL challenge, your query should return all the people who report to either Jenny Richards 
+or have a NULL value in ReportsTo. The rows should be ordered by Age. Your query should also add a column 
+at the end with a title of Boss Title where the value is either None or CEO. Your output should look like the following table.
+
+query==>>>SELECT base_table_name.ID, base_table_name.Name, DivisionName, CASE WHEN base_table_name.ManagerID IS NOT NULL
+AND base_table_name.ManagerID = base_table_name.ID
+then Name ELSE 'Susan Wall' END AS 'ManagerName', salary
+FROM base_table_name  
+left join cb_companydivisions on maintable_8V9LH.DivisionId = cb_companydivisions.id;
+
+
+
+===>>coderbyte mysql challenge MySQL challenge, your query should return the informatioi for the employee with the third highest salary.” Code Answer’s
+query==>>select sal, ename
+from emp
+where sal =
+    (
+        select max(sal) from emp where sal <
+            (select max(sal) from emp)
+    )
+
+
+2===>>
+select *
+from 
+(
+    select ename, sal, dense_rank() over(order by sal desc) rank
+    from emp
+)
+where rank =2;
+
+
+q-->>Two sum problem
+The two sum problem is a common interview question, and it is a variation of the subset sum problem.
+There is a popular dynamic programming solution for the subset sum problem, but for the two sum problem we can actually
+write an algorithm that runs in O(n) time. The challenge is to find all the pairs of two integers in an unsorted array that sum up to a given S.
+sol==>>
+
+function twoSum(arr, S) {
+
+  var sums = [];
+
+  // check each element in array
+  for (var i = 0; i < arr.length; i++) { 
+
+    // check each other element in the array
+    for (var j = i + 1; j < arr.length; j++) {
+
+      // determine if these two elements sum to S
+      if (arr[i] + arr[j] === S) {
+        sums.push([arr[i], arr[j]]);
+      }
+
+    }
+
+  }
+
+  // return all pairs of integers that sum to S
+  return sums;
+
+}
+
+twoSum([3, 5, 2, -4, 8, 11], 7);  
+
+
+===>>
+
+ Problem Statement                                            *
+ * Have the function PalindromicSubstring(str) take the str     *
+ * parameter being passed and find the longest palindromic      *
+ * substring, which means the longest substring which is read   *
+ * the same forwards as it is backwards.                        *
+ * For example: if str is "abracecars" then your program should *
+ * return the string racecar because it is the longest          *
+ * palindrome within the input string.                          *
+ *                                                              *
+ * The input will only contain lowercase alphabetic characters. *
+ * The longest palindromic substring will always be unique,     *
+ * but if there is none that is longer than 2 characters,       *
+ * return the string none.                                      *
+ *                                                              *
+ * Examples                                                     *
+ * Input 1: "hellosannasmith"                                   *
+ * Output 1: sannas                                             *
+ *                                                              *
+ * Input 2: "abcdefgg"                                          *
+ * Output 2: none                            
+
+sol===>>>
+
+function isPalindrome( string ) {
+        let leftPointer = 0;
+        let rightPointer = string.length - 1;
+
+        while( leftPointer < rightPointer ) {
+                if( string[leftPointer] !== string[rightPointer] ) {
+                        return false;
+                }
+                leftPointer++;
+                rightPointer--;
+        }
+
+        return true;
+}
+
+function reverseString( s ) {
+        let str = "";
+        for( let i = s.length-1; i>=0; i-- ){
+                str += s[i];
+        }
+        return str;
+}
+
+function PalindromicSubstring( str ) {
+        let PalindromicSubstrings = [];
+        for( let i=0; i<str.length; i++ ) {
+                let reverseStr = reverseString( str.slice(i+1) );
+                for( let j=0; j<reverseStr.length; j++ ) {
+                        if( reverseStr.slice(j) === str[i] ) {
+                                continue;
+                        }
+                        let subString =  reverseString( ( reverseStr.slice(j) + str[i] ) );
+                        if( isPalindrome( subString ) ) {
+                                PalindromicSubstrings.push( subString );
+                        }
+                }
+        }
+        let max = -1;
+        let index = -1;
+        for( let i=0; i<PalindromicSubstrings.length; i++ ) {
+                if(PalindromicSubstrings[i].length > max) {
+                        max = PalindromicSubstrings[i].length;
+                        index = i;
+                }
+        }
+        return index === -1 ? "none" : PalindromicSubstrings[index];
+}
+         
+// KEEP THIS FUNCTION CALL HERE
+console.log(PalindromicSubstring(readline()));
+
+
+
+
+qq==>>>>
+
+Problem Statement                                            *
+ * Have the function EvenPairs(str) take the str parameter being*
+ * passed & determine if a pair of adjacent even numbers exists *
+ * anywhere in the string. If a pair exists, return the string  *
+ * true, otherwise return false. For example: if str is         *
+ * "f178svg3k19k46" then there are two even numbers at the end  *
+ * of the string, "46" so your program should return the string *
+ * true. Another example: if str is "7r5gg812" then the pair is *
+ * "812" (8 & 12) so your program should return the string true *
+ *                                                              *
+ * Examples                                                     *
+ * Input 1: "3gy41d216"                                         *
+ * Output 1: true                                               *
+ *                                                              *
+ * Input 2: "f09r27i8e67"                                       *
+ * Output 2: false            
+
+
+solu==>>>
+
+function EvenPairs( str ) {
+        // SOLUTION 1
+        for( let i=0; i<str.length; i++ ) {
+                if( typeof( +str[i] ) === 'number' && typeof( +str[i+1] ) === 'number' ) {
+                        for( let j = i+1; j<str.length; j++ ) {
+                                if( !( +str[j] ) ) {
+                                        break;
+                                }
+                                if( ( ( +str[j] ) % 2 === 0 ) && ( ( +str[i] ) % 2 === 0 ) ) {
+                                        return true;
+                                }
+                        }
+                }
+        }
+        return false;
+
+        /*
+                SOLUTION 2
+                for( let i=0; i<str.length; i++ ) {
+                        let slicedEvenPair = str.slice(i+1);
+                        if( +slicedEvenPair[0]) {
+                                for( let j = 0; j<slicedEvenPair.length; j++ ) {
+                                        if( !(+slicedEvenPair[j]) ) {
+                                                break;
+                                        }
+                                        else if( (+slicedEvenPair[j]) % 2 === 0 && (+str[i]) % 2 === 0 ) {
+                                                return true;
+                                        }
+                                }
+                        }
+                }
+                return false;
+        
+        */
+}
+         
+// KEEP THIS FUNCTION CALL HERE 
+console.log( EvenPairs( readline() ) );
+
+
+
+qq==>>
+
+Problem Statement                                            *
+ * Have the function BracketMatcher(str) take the str parameter	*
+ * being passed and return 1 if the brackets are correctly	*
+ * matched and each one is accounted for. Otherwise return 0.	*
+ * For example: if str is "(hello (world))", then the output	*
+ * should be 1, but if str is "((hello (world))" the the output	*
+ * should be 0 because the brackets do not correctly match up.	*
+ * Only "(" and ")" will be used as brackets. If str contains	*
+ * no brackets return 1.    					*
+ *                                                              *
+ * Examples                                                     *
+ * Input 1: "(coder)(byte))"                                    *
+ * Output 1: 0                                                  *
+ *                                                              *
+ * Input 2: "(c(oder)) b(yte)"                                  *
+ * Output 2: 1                                    
+
+sol==>
+
+function BracketMatcher( str )
+{
+	let count = 0;
+	for( let i=0; i<str.length; i++ )
+	{
+		if( str[i] === '(' )
+		{
+			count++;
+		}
+		else if( str[i] == ')' )
+		{
+			count--;
+		}
+		if( count == -1 )
+		{
+			return 0;
+		}
+	}
+
+	return ( count === 0 ) ? 1 : 0;
+}
+
+// KEEP THIS FUNCTION CALL HERE
+console.log(BracketMatcher(readline()));
+
+
+
+longest word=====>>>
+Longest Word
+Have the function LongestWord(sen) take the sen parameter being passed and return the longest word in the string.
+If there are two or more words that are the same length, return the first word from the string with that length. 
+Ignore punctuation and assume sen will not be empty. Words may also contain numbers, for example "Hello world123 567"
+
+sol==>>
+function LongestWord(sen) { 
+  sen=sen.replace(/[^a-zA-Z ]/ig,'')
+  words = sen.split(" ")
+  LongestWord = words[0]
+  for (i = 0; i<words.length; i ++) {
+  	if (words[i].length > LongestWord.length) {
+  	  LongestWord = words[i]	
+  	}
+  }
+ return LongestWord
+}
+
+isko submit kr dete hn 30 mint bche next b h
+ 
+   
+// keep this function call here 
+LongestWord(readline());
+
+q==>
+
+React Button Toggle------------
+We provided some simple React template code. Your goal is to modify the component so that you can properly toggle the button to switch between 
+an ON state and an OFF state. When the button is on and it is clicked, it turns off and the text within it changes from ON to OFF and vice versa.
+Make use of component state for this challenge.
+You are free to add classes and styles, but make sure you leave the element ID's as they are. Submit your code once it is complete and
+ our system will validate your output.
+
+sol===>>import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+
+const Toggle = () => {
+  const [on, setOn] = useState(true);
+
+  return (
+    <button onClick={() => setOn(!on)}>{ on ? 'ON' : 'OFF' }</button>
+  );
+}
+
+ReactDOM.render(
+  <Toggle />,
+  document.getElementById('root')
+);
+
+
+qq=>>>-------------------------
+
+Questions Marks
+Have the function QuestionsMarks(str) take the str string parameter, which will contain single digit numbers, letters, 
+and question marks, and check if there are exactly 3 question marks between every pair of two numbers that add up to 10.
+ If so, then your program should return the string true, otherwise it should return the string false. 
+If there aren't any two numbers that add up to 10 in the string, then your program should return false as well.
+
+For example: if str is "arrb6???4xxbl5???eee5" then your program should return true because there are exactly 3 
+question marks between 6 and 4, and 3 question marks between 5 and 5 at the end of the string.
+Examples
+Input: "aa6?9"
+Output: false
+Input: "acc?7??sss?3rr1??????5"
+Output: true
+
+sol===>>
+function QuestionsMarks(str) { 
+    res = false;
+    for(let i=0; i<str.length; i++){
+        for(let j=i+1; j<str.length; j++){
+            if(Number(str[i]) + Number(str[j])=== 10){
+                res = true;
+                if(str.slice(i,j).split("?").length -1 < 3){
+                    return false;
+                }
+            }
+        }
+    }
+    return res;
+}
+   
+// keep this function call here 
+QuestionsMarks(readline());
+
+
+qq==>>>
+
+FindIntersection(strArr) read the array of strings stored in strArr which will contain 2 elements:
+ the first element will represent a list of comma-separated numbers sorted in ascending order, 
+the second element will represent a second list of comma-separated numbers (also sorted). 
+Your goal is to return a comma-separated string containing the numbers that occur in elements of strArr in sorted order.
+If there is no intersection, return the string false.
+Examples
+Input: ["1, 3, 4, 7, 13", "1, 2, 4, 13, 15"]
+Output: 1,4,13
+Input: ["1, 3, 9, 10, 17, 18", "1, 4, 9, 10"]
+Output: 1,9,10
+
+sol==>>
+
+function FindIntersection(strArr) {
+  let singleItems = [];
+  let repeatItems = [];
+  strArr = strArr
+    .join(",")
+    .split(",")
+    .sort((a, b) => {
+      return a - b;
+    });
+  strArr.forEach((str) => {
+    if (singleItems.indexOf(str) > -1) repeatItems.push(str);
+    singleItems.push(str);
+  });
+  repeatItems.join(",");
+  return repeatItems;
+}
+
+
+
+qq==>>
+
+Codeland Username Validation---------------------------------
+Have the function CodelandUsernameValidation(str) take the str parameter being passed and determine if the string is a valid username according to the following rules:
+
+1. The username is between 4 and 25 characters.
+2. It must start with a letter.
+3. It can only contain letters, numbers, and the underscore character.
+4. It cannot end with an underscore character.
+
+If the username is valid then your program should return the string true, otherwise return the string false.
+Examples
+Input: "aa_"
+Output: false
+Input: "u__hello_world123"
+Output: true
+
+sol==>
+function CodelandUsernameValidation(str) { 
+
+  // code goes here  
+  const valid_reg = /^[A-Za-z]\w+[A-Za-z0-9]$/;
+  const valid_length = (str) => str.length >= 4 && str.length <= 25;
+  return valid_reg.test(str) && valid_length(str);
+}
+   
+// keep this function call here 
+console.log(CodelandUsernameValidation(readline()));
+
+-------------------------------------------------------------------------------------------------
+
+qq->
+Tree Constructor
+Have the function TreeConstructor(strArr) take the array of strings stored in strArr, which will contain pairs of integers 
+in the following format: (i1,i2), where i1 represents a child node in a tree and the second integer i2 signifies that it is the parent of i1.
+ For example: if strArr is ["(1,2)", "(2,4)", "(7,2)"], then this forms the following tree:
+
+which you can see forms a proper binary tree. Your program should, in this case, return the string true because a valid binary tree can be formed. If a proper binary tree cannot be formed with the integer pairs, then return the string false. All of the integers within the tree will be unique, which means there can only be one node in the tree with the given integer value.
+Examples
+Input: ["(1,2)", "(2,4)", "(5,7)", "(7,2)", "(9,5)"]
+Output: true
+Input: ["(1,2)", "(3,2)", "(2,12)", "(5,2)"]
+Output: false
+
+sol==>>
+function node(val) {
+  const obj = {}
+  obj.val = val;
+  obj.hasParent = false;
+  obj.left = null;
+  obj.right = null;
+  return obj;
+}
+
+function TreeConstructor(strArr) {
+  // parse strArr;
+  strArr = strArr.map(item => {
+    item = item.replace(/[() ]+/g, '');
+    return item.split(',');
+  });
+  
+  const tree = {};
+  
+  for (let i = 0; i < strArr.length; i++) {
+    // instantiate nodes
+    if (tree[strArr[i][0]] === undefined) { tree[strArr[i][0]] = node(strArr[i][0]); }
+    if (tree[strArr[i][1]] === undefined) { tree[strArr[i][1]] = node(strArr[i][1]); }
+
+    // quick check to make sure nodes can't have multiple parents
+    if (tree[strArr[i][0]].hasParent === true) { return false; }
+
+    // check to see if parent has 2 children already, fill in empty spaces if not
+    if (tree[strArr[i][1]].left === null) {
+      tree[strArr[i][1]].left = tree[strArr[i][0]];
+    } else if (tree[strArr[i][1]].right === null) {
+      tree[strArr[i][1]].right = tree[strArr[i][0]];
+    } else {
+      return false;
+    }
+    tree[strArr[i][0]].hasParent = true;
+  }
+  return true;
+}
+   
+// keep this function call here 
+TreeConstructor(readline());
+
+
+-----------------------------------------------------
+
+q-->>>First Reverse
+
+Have the function FirstReverse(str) take the str parameter being passed and return the string in reversed order. For example: 
+if the input string is "Hello World and Coders" then your program should return the string sredoC dna dlroW olleH.
+Examples
+Input: "coderbyte"
+Output: etybredoc
+Input: "I Love Code"
+Output: edoC evoL I
+
+sol==>
+function FirstReverse(string) {
+  return string.split('').reverse().join('');
+}
+   
+// keep this function call here 
+FirstReverse(readline());
+
+
+==================================================
+longest Word
+
+function LongestWord(sen) { 
+  sen=sen.replace(/[^a-zA-Z ]/ig,'')
+  words = sen.split(" ")
+  LongestWord = words[0]
+  for (i = 0; i<words.length; i ++) {
+  	if (words[i].length > LongestWord.length) {
+  	  LongestWord = words[i]	
+  	}
+  }
+ return LongestWord
+}
+
+
+ 
+   
+// keep this function call here 
+LongestWord(readline());
+
+
+============================================
+
+->>implink-------------->>>
+
+https://github.com/bradhanson/coderbyte
+
+
+Bracket Combinations-----------
+Have the function BracketCombinations(num) read num which will be an integer greater than or equal to zero, 
+and return the number of valid combinations that can be formed with num pairs of parentheses. 
+For example, if the input is 3, then the possible combinations of 3 pairs of parenthesis, namely: ()()(), 
+are ()()(), ()(()), (())(), ((())), and (()()). There are 5 total combinations when the input is 3, so your 
+program should return 5.
+Examples
+Input: 3
+Output: 5
+Input: 2
+Output: 2
+
+
+sol+==>>>
+
+function BracketCombinations(num) { 
+  let factorial = (n) => {
+    let k = 1;
+    for(var i = n; i >= 1; i--){
+      k *= i;
+    }
+    return k;
+  }
+  
+
+  const result = (factorial(2 * num)) / ((factorial(num + 1)) * (factorial(num)));
+  return result; 
+}
+   
+
+console.log(BracketCombinations(readline()));
+
+
+
+q==>Min Window Substring
+Have the function MinWindowSubstring(strArr) take the array of strings stored in strArr, 
+which will contain only two strings, the first parameter being the string N and the second parameter being a 
+string K of some characters, and your goal is to determine the smallest substring of N that contains all the
+ characters in K. For example: if strArr is ["aaabaaddae", "aed"] then the smallest substring of N that contains
+ the characters a, e, and d is "dae" located at the end of the string. So for this example your program should
+return the string dae.
+
+Another example: if strArr is ["aabdccdbcacd", "aad"] then the smallest substring of N that contains all of the characters in K is "aabd" which is located at the beginning of the string. Both parameters will be strings ranging in length from 1 to 50 characters and all of K's characters will exist somewhere in the string N. Both strings will only contains lowercase alphabetic characters.
+Examples
+Input: ["ahffaksfajeeubsne", "jefaa"]
+Output: aksfaje
+Input: ["aaffhkksemckelloe", "fhea"]
+Output: affhkkse
+
+sol==>>>
+
+function MinWindowSubstring(strArr) {
+	let str = strArr[0];
+	let needle = strArr[1].split('');
+
+	//start with the smallest possible substrings, then go up
+	for (let i = needle.length, len = str.length; i <= len; i++ ) {
+		for (j = 0; j <= len - i; j++) {
+			let mySlice = str.substr(j, i);
+			if (isContained(mySlice)) {
+				return mySlice;
+			}
+		}
+	}
+	return 'Not in string';
+
+// ---------------------- helpers -----------------------------
+	//isContained checks to see if all the chars in the needle are in the given string
+	function isContained(str) {
+		let arr = str.split('');
+		for (let i = 0, len = needle.length; i < len; i++) {
+			let place = arr.findIndex(val => {
+				return val === needle[i]
+			});
+			if (place === -1) {
+				return false;
+			} else {
+				arr.splice(place, 1);
+			}
+		}
+		return true;
+	}
+}
+   
+// keep this function call here 
+MinWindowSubstring(readline());
+
+
+
+sql==>>
+
+1=)Select * from Worker where FIRST_NAME like '_____h';
+
+SELECT CONCAT(FIRST_NAME, ' ', LAST_NAME) As Worker_Name, Salary
+FROM worker 
+WHERE salary>=50000 or salary<=10000
+
+
+
+clustered index--->>>
+Clustered index is faster.
+Clustered index requires less memory for operations.
+In clustered index, index is the main data.
+A table can have only one clustered index.
+
+NON-CLUSTERED INDEX===>>
+Non-clustered index is slower.
+Non-Clustered index requires more memory for operations.
+In Non-Clustered index, index is the copy of data.
+A table can have multiple non-clustered index.
+
+
+q-->> Restfull services
+A RESTful API is an API that follows the Representational State Transfer (REST) architectural constraints.
+An Application Programming Interface (API) is a set of rules two software programs use to communicate with each other and exchange data.
+A RESTful API is a software interface that allows you to GET, PUT, POST, and DELETE data via HTTP queries.
+
+advantages--->>>
+1.Easy to integrate=>A decent RESTful API may be found from the very first URI. This isn’t to say that each application that uses your service will know what to do automatically.
+2.Use of HTTP==HTTP (THE most popular implementation of REST). Speaking of HTTP, the web’s protocol, and outputting JSON
+3.Scalability-->>Stateless communication and a replicated repository provide a high level of scalability.
+4.independence
+5.Uniform Interface
+6.Layered System=>hat a client who connects to an intermediary component does not know with whom that component will engage later. This encourages developers to design
+ separate components that are easy to upgrade.
+
+
+
+
+
+==sql query==>>> 2nd highest salary
+SELECT
+  IFNULL(
+    (
+      SELECT DISTINCT Salary
+      FROM Employee
+      ORDER BY Salary DESC
+      LIMIT 1 OFFSET 1
+    ),
+  NULL)
+AS SecondHighestSalary;
+
+q-->>Write a SQL query for a report that provides the following information for each person in the Person table, regardless if there is an address for each of those people:
+
+Person        Address         Your output
+------        -------         -----------
+PersonId      AddressId       FirstName
+FirstName     PersonId        LastName
+LastName      City            City
+              State           State
+
+SELECT FirstName, LastName, City, State
+FROM Person
+LEFT JOIN Address
+ON Person.PersonId = Address.PersonId;
+
+
+
+query===>The Employee table holds information for all employees including their managers.
+ Every employee has an Id, and there is also a column for their manager Id.
+
++----+-------+--------+-----------+
+| Id | Name  | Salary | ManagerId |
++----+-------+--------+-----------+
+| 1  | Joe   | 70000  | 3         |
+| 2  | Henry | 80000  | 4         |
+| 3  | Sam   | 60000  | NULL      |
+| 4  | Max   | 90000  | NULL      |
++----+-------+--------+-----------+
+Given the Employee table, write a SQL query that finds out employees who earn more than their managers. 
+For the above table, Joe is the only employee who earns more than his manager.
+
++----------+
+| Employee |
++----------+
+| Joe      |
++----------+
+
+sol==>
+SELECT A.Name AS Employee
+FROM Employee A
+JOIN Employee B
+ON A.managerId = B.Id
+WHERE A.Salary > B.Salary;
+
+
+
+query==>For this challenge you need to join the people table and the toys table and return all people
+ fields as well as the count of toys for each person as toy_count.
+people        toys
+------        ----
+id            id
+name          name
+              people_id
+
+
+sol==>>SELECT people.*, COUNT(*) as toy_count
+FROM people JOIN toys
+ON people.id = toys.people_id
+GROUP BY people.id;
+
+
+qq=>> sql sort ages” 
+sol==>SELECT q.* 
+    FROM (SELECT TOP 3 * 
+              FROM table 
+              ORDER BY id DESC) q
+    ORDER BY q.id ASC
+
+
+
+qq==> “SQL ORDER BY ASC (Ascending Order)”
+SELECT *
+FROM Customers
+ORDER BY age ASC;
+
+

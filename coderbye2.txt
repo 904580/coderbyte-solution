@@ -1,0 +1,540 @@
+longest word------------------
+
+function LongestWord(sen) { 
+  sen=sen.replace(/[^a-zA-Z ]/ig,'')
+  words = sen.split(" ")
+  LongestWord = words[0]
+  for (i = 0; i<words.length; i ++) {
+  	if (words[i].length > LongestWord.length) {
+  	  LongestWord = words[i]	
+  	}
+  }
+ return LongestWord
+}
+
+
+ 
+   
+// keep this function call here 
+LongestWord(readline());
+
+
+
+---------------------
+matrix sprial--------
+
+function MatrixSpiral(strArr) {
+  let matrix = strArr.map((el) => JSON.parse(el));
+  const arr = [];
+  while (matrix.length) {
+    arr.push(
+      ...matrix.shift(),
+      ...matrix.map((a) => a.pop()),
+      ...(matrix.pop() || []).reverse(),
+      ...matrix.map((a) => a.shift()).reverse()
+    );
+  }
+  // code goes here
+  return arr.join(",");
+}
+
+// keep this function call here
+console.log(MatrixSpiral(readline()));
+
+
+---------------------------------
+/*
+ Question	
+ 
+    Have the function NumberSearch(str) take the str parameter, search for all the numbers in the string, add them together, 
+    then return that final number divided by the total amount of letters in the string. For example: if str is "Hello6 9World 2, 
+    Nic8e D7ay!" the output should be 2. First if you add up all the numbers, 6 + 9 + 2 + 8 + 7 you get 32. 
+    Then there are 17 letters in the string. 32 / 17 = 1.882, and the final answer should be rounded to the nearest whole number, 
+    so the answer is 2. Only single digit numbers separated by spaces will be used throughout the whole string 
+    (So this won't ever be the case: hello44444 world). Each string will also have at least one letter.
+    Sample Test Cases
+    Input:"H3ello9-9"
+    Output:4
+    Input:"One Number*1*"
+    Output:0
+*/
+
+
+//Answer
+
+function numberSearch(str) { 
+
+  return Math.round(str.match(/[0-9]/g).reduce((item, next) => +item + +next) / str.match(/[a-zA-z]/g).length); 
+         
+}
+
+
+
+//Control
+console.log(numberSearch("H3ello9-9"));
+console.log(numberSearch("One Number*1*"));
+
+
+
+
+------------------------------------------------------
+mximal Rectangle matrix problem----------
+
+function MatrixSpiral(strArr) {
+  let matrix = strArr.map((el) => [...el]);
+  var n = matrix.length;
+  var m = (matrix[0] || []).length;
+  var max = 0;
+  var heights = Array(m);
+  var stack = [];
+  var h = 0;
+  var w = 0;
+
+  for (var i = 0; i < n; i++) {
+    stack = [];
+
+    for (var j = 0; j < m; j++) {
+      if (matrix[i][j] === "1") {
+        heights[j] = i === 0 ? 1 : heights[j] + 1;
+      } else {
+        heights[j] = 0;
+      }
+
+      while (stack.length && heights[j] <= heights[stack[stack.length - 1]]) {
+        h = heights[stack.pop()];
+        w = stack.length === 0 ? j : j - stack[stack.length - 1] - 1;
+        max = Math.max(max, h * w);
+      }
+
+      stack.push(j);
+    }
+
+    while (stack.length) {
+      h = heights[stack.pop()];
+      w = stack.length === 0 ? m : m - stack[stack.length - 1] - 1;
+      max = Math.max(max, h * w);
+    }
+  }
+
+  return max;
+}
+console.log(MatrixSpiral(["101", "111", "001"]));
+
+
+
+
+-------------------------------------------------------------------------
+
+/*
+ Question	
+ 
+  Have the function PalindromicSubstring(str) take the str parameter being passed and find the longest palindromic substring, 
+  which means the longest substring 
+  which is read the same forwards as it is backwards. For example: if str is "abracecars" then your program should return 
+  the string racecar because it is the longest palindrome within the input string. 
+  The input will only contain lowercase alphabetic characters. The longest palindromic substring will always be unique, 
+  but if there is none that is longer than 2 characters, return the string none. 
+   
+*/
+
+//Answer
+
+function PalindromicSubstring(str) { 
+ 
+  if (str === str.split('').reverse().join('')) { return str; }
+  let longest = '';
+  for(let i = 0; i < str.length ; i++){
+      let test = str[i];
+      for(let j = i + 1; j < str.length; j++){
+          test += str[j];
+          if(test === test.split('').reverse().join('')){
+            if(longest.length < test.length) {longest = test;}
+          }
+      }
+  }
+  return longest.length < 3 ? 'none' : longest;
+         
+}
+
+//Control
+console.log(PalindromicSubstring("abracecars"));
+console.log(PalindromicSubstring("million"));
+
+
+
+
+---------------------------------------
+
+/*
+ Question	
+ 
+  Have the function FibonacciChecker(num) return the string yes if the number given is part of the Fibonacci sequence. 
+  This sequence is defined by: Fn = Fn-1 + Fn-2, which means to find Fn you add the previous two numbers up. 
+  The first two numbers are 0 and 1, then comes 1, 2, 3, 5 etc.
+  If num is not in the Fibonacci sequence, return the string no. 
+  Sample Test Cases
+  Input:34
+  Output:"yes"
+  Input:54
+  Output:"no"
+   
+*/
+
+//Answer
+
+function FibonacciChecker(num) { 
+ 
+  if(num === 0){
+      return 'yes';
+  }
+  const lastTwo = [0,1];
+  while(lastTwo[1] < num){
+      lastTwo.push(lastTwo[0] + lastTwo[1]);
+      lastTwo.shift();
+  }
+  return lastTwo[1] === num ? "yes" : "no";
+         
+}
+
+//Control
+console.log(FibonacciChecker(34));
+console.log(FibonacciChecker(54));
+
+
+
+-------------------------------------------------------------------
+largest four---
+sol-->>
+
+function LargestFour(arr) {
+  // code goes here
+  let arr1 = arr.sort(); //Küçükten büyüğe doğru sıralama yaptım.
+  let sum =
+    arr1[arr1.length - 1] +
+    arr1[arr1.length - 2] +
+    arr1[arr1.length - 3] +
+    arr1[arr1.length - 4]; //Son dört elemanı topladım.
+
+  return sum;
+}
+
+// keep this function call here
+console.log(LargestFour(readline()));
+
+
+--------------------------------------------
+
+/*
+ Question	
+ Using the JavaScript language, have the function PrimeTime(num) take the num parameter being passed and return the string true if the parameter is a prime number, otherwise return the string false. The range will be between 1 and 2^16.
+    
+ Sample Test Cases
+    
+    Input:19
+    Output:true
+    
+    Input:110
+    Output:false
+*/
+
+//Answer
+
+let primeTime = (num) => {
+  let prime = true;
+  for (let i = num - 1; i > 1; i--) {
+    if (Number.isInteger(num / i)) { prime = false}
+  }
+  return prime;
+}
+
+//Control
+
+console.log(primeTime('19'));
+console.log(primeTime('110'));
+
+
+
+----------------------------------------------------
+pascals Triangle.......
+
+function PascalsTriangle(arr) {
+  let pascals = [[1], [1, 1]];
+
+  while (true) {
+    let lastRow = pascals[pascals.length - 1];
+    if (arr[1] === lastRow[1]) {
+      break;
+    }
+    let newArr = [];
+    for (let j = 1; j < lastRow.length; j++) {
+      newArr.push(lastRow[j - 1] + lastRow[j]);
+    }
+    newArr.unshift(1);
+    newArr.push(1);
+    pascals.push(newArr);
+  }
+
+  let lastRow = pascals[pascals.length - 1];
+
+  // code goes here
+  if (lastRow.length === arr.length) {
+    return -1;
+  } else {
+    return lastRow[arr.length];
+  }
+
+  // return pascals;
+}
+
+// keep this function call here
+console.log(PascalsTriangle(readline()));
+
+
+
+
+
+
+
+----------------------------------------------------------
+/*
+ Question	
+ 
+This challenge requires you to determine if the mean is equal to the mode of an array. 
+The mean is the average of the array, in other words, all the numbers added up and divided by the number of elements. 
+The mode is the element that appears most often in the array. For example, 
+if the array were [5, 3, 3, 3, 1] your program should return 1 because the mean is 3 and the mode is 3. 
+If they are not equal your program should return 0.
+Sample Test Cases
+Input: 1, 2, 3
+Output: 0
+Input: 4, 4, 4, 6, 2
+Output: 1
+*/
+
+
+//Answer
+
+function MeanMode(arr) { 
+ 
+  var summed = arr.reduce(function(previousVal, currentVal, index, self) {
+    return previousVal + currentVal;
+  });
+
+  var mean = summed / arr.length;
+  var table = {};
+
+  for (var i = 0; i < arr.length; i++) {
+    var number = arr[i];
+    table[number] === undefined ? table[number] = 1 : table[number] += 1;
+  }
+
+  var answer = {number: null, count: 0};
+  
+  for (var n in table) {
+    if (table[n] > answer["count"]) {
+      answer["count"] = table[n];
+      answer["number"] = n;
+    }
+  }
+
+  return (answer["number"] == mean) ? 1 : 0;
+         
+}
+
+//Control
+console.log(MeanMode([1, 2, 3]));
+console.log(MeanMode([4, 4, 4, 6, 2]));
+
+--------------------------------------------------------------------------------------------------------------------
+
+/*
+ Question	
+ 
+    have the function ArrayAddition(arr) take the array of numbers stored in arr and return
+    the string true if any combination of numbers in the array can be added up to equal the largest number in the array,
+    otherwise return the string false. For example: if arr contains [4, 6, 23, 10, 1, 3] the output should return true
+    because 4 + 6 + 10 + 3 = 23. The array will not be empty, will not contain all the same elements, and may contain
+    negative numbers.
+    Sample Test Cases
+    Input:5,7,16,1,2
+    Output:"false"
+    Input:3,5,-4,8,12
+    Output:"true"
+*/
+
+
+//Answer
+
+function ArrayAddition(arr) { 
+  //get largest number and remove it from array
+  const sum = Math.max(...arr);
+  arr.splice(arr.indexOf(sum), 1);
+  // check if the temporary sum equals our sum above
+  for (let i = 0; i < arr.length; i++) {
+    let runningSum = arr[i];
+    for (let j = 0; j < arr.length; j++) {
+      if (i === j) { continue; }
+      runningSum += arr[j];
+      if (runningSum === sum) {
+          return true;
+      }
+    }
+  } 
+  return false; 
+         
+}
+
+//Control
+console.log(ArrayAddition([5,7,16,1,2]));
+console.log(ArrayAddition([3,5,-4,8,12]));
+
+
+
+-------------------------------------------------------
+/*
+ Question	
+ 
+    Have the function LetterCapitalize(str) take the str parameter being passed and capitalize the first letter of each word. Words will be separated by only one space.
+    
+    Sample Test Cases
+    
+    Input:"hello world"
+    Output:"Hello World"
+    
+    Input:"i ran there"
+    Output:"I Ran There"
+*/
+
+//Answer
+
+var letterCapitalize = function(str) {
+	var strArr = str.split("");
+	strArr[0] = strArr[0].toUpperCase();
+
+	for (var i = 0; i < strArr.length; i ++) {
+		if(strArr[i] === " ") {
+			strArr[i + 1] = strArr[i + 1].toUpperCase();
+		}
+	}
+	return strArr.join("");
+};
+
+//Control
+console.log(letterCapitalize("hello world"));
+console.log(letterCapitalize("i ran there"));
+
+
+------------------------------------------
+sol-->
+function Consecutive(arr) {
+  let len = arr.length;
+  let max = Math.max(...arr);
+  let min = Math.min(...arr);
+
+  // code goes here
+  return max - min - (len - 1);
+}
+
+// keep this function call here
+console.log(Consecutive(readline()));
+
+
+-----------------------------------------
+/* Take array of numbers - duplicate entries. For example if the input is [1, 2, 2, 2, 3]
+then your program should output 2 because there are two duplicates of one of the elements. */
+
+const assert = require("assert");
+
+function DistinctList(arr) {
+  // Declare and initialize an array
+  var duplicates = 0;
+  // Duplicate elements can be found using two for loops
+  // Outer loop will iterate through the array from 0 to length of the array
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = 0; j < arr.length; j++) {
+      // If a match is found (duplicate element is found), then display element
+      if (arr[i] === arr[j] && i !== j) {
+        duplicates++;
+        arr.splice(arr.indexOf(arr[i]), 1);
+      }
+    }
+  }
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = 0; j < arr.length; j++) {
+      if (arr[i] === arr[j] && i !== j) {
+        duplicates++;
+        arr.splice(arr.indexOf(arr[i]), 1);
+      }
+    }
+  }
+  return duplicates;
+}
+
+/* const in1 = "12223"; // input
+const expect1 = "2"; // output
+const test1 = DistinctList(in1);
+console.log(test1);
+assert.strictEqual(test1, expect1, `should be ${expect1}`);
+*/
+
+
+--------------------------------------------------------------------
+power of two==
+
+// solution:
+const assert = require("assert");
+
+function powersOfTwo(n) {
+  const powerArray = [];
+
+  for (let i = 0; i <= n; i += 1) {
+    // console.log(Math.pow(2,i));
+    powerArray.push(Math ** (2, i));
+  }
+
+  // console.log(powerArray);
+  return [];
+}
+
+powersOfTwo(0);
+powersOfTwo(6);
+powersOfTwo(8);
+const r1 = "[]";
+
+assert(r1);
+
+
+---------------------------------------------------------------
+  /**
+   * Challenge
+   * Using the JavaScript language, have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
+   * Sample Test Cases
+   *
+   * Input:"fun&!! time"
+   * Output:"time"
+   *
+   * Input:"I love dogs"
+   * Output:"love"
+   *
+   * @param {string} sentence A string to iterate over and search for longest word
+   * @return {string} Longest word in the sentence
+   */
+  longestWord (sentence) {
+    let words = sentence.replace(/\W/g, ' ')
+      .replace(/ +|\s/g, ' ')
+      .split(' ')
+      .sort((a, b) => a.length < b.length);
+
+    return words[0];
+  }
+}
+
+export { CoderByte }
+
+
+
+
+
+
+
+
